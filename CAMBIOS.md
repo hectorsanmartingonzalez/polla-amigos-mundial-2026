@@ -1,6 +1,15 @@
 # Historial de cambios — Polla Amigos
 
-## v1.0 — Versión final
+## v1.1 — Rediseño minimalista + mejoras
+
+- Nueva paleta minimalista premium: índigo · violeta (reemplaza magenta-naranja-ámbar).
+- Color usado con más restricción; íconos, og.png, favicon y splash regenerados.
+- Cold start de Render: aviso "Despertando la cancha…" si la primera carga tarda.
+- Onboarding del PIN más claro (qué poner, no usar clave del banco).
+- Recordatorio accionable de predicciones pendientes en la pestaña Predicción.
+- Estado vacío de la tabla más cálido.
+
+## v1.0 — Versión inicial
 
 Adaptación de "Polla Judicial Mundial 2026" a **Polla Amigos**: una polla entre amigos con estética propia, limpia y festiva, manteniendo intacta la lógica de juego (puntaje, fixture, PIN, planilla de Google como backend).
 

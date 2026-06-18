@@ -5,42 +5,44 @@
    ============================================================ */
 
 :root{
-  /* Base clara y luminosa */
-  --fondo:#FBFAFF;       /* blanco con tinte lila imperceptible */
+  /* Base clara y luminosa, con tinte frío neutro */
+  --fondo:#FAFAFC;       /* casi blanco, tinte gris frío */
+  --fondo-2:#F4F4F8;
 
-  /* Tarjetas (superficies sólidas, no vidrio) */
+  /* Tarjetas (superficies sólidas) */
   --carta:#FFFFFF;
-  --carta-2:#F6F4FC;     /* relleno suave dentro de tarjetas */
-  --borde:#EAE7F3;
-  --borde-fuerte:#D8D3E8;
+  --carta-2:#F5F5FA;     /* relleno suave dentro de tarjetas */
+  --borde:#EBEBF1;
+  --borde-fuerte:#DCDCE6;
 
   /* Texto */
-  --tinta:#1A1830;       /* casi negro violáceo */
-  --tinta-sua:#5E5A78;
-  --tinta-ten:#9893B0;
+  --tinta:#16161E;       /* casi negro neutro */
+  --tinta-sua:#56566A;
+  --tinta-ten:#9A9AAC;
 
-  /* Gradiente fiesta (acento principal) */
-  --g1:#FF2D87;          /* magenta */
-  --g2:#FF7A1A;          /* naranja */
-  --g3:#F5A800;          /* ámbar (un poco más profundo para contraste sobre blanco) */
-  --fiesta:linear-gradient(100deg,#FF2D87 0%,#FF7A1A 55%,#F5A800 100%);
-  --fiesta-sua:linear-gradient(100deg,rgba(255,45,135,.10),rgba(245,168,0,.08));
+  /* Color de marca — índigo · violeta (sobrio y premium) */
+  --g1:#4F46E5;          /* índigo */
+  --g2:#6D40E0;          /* índigo-violeta */
+  --g3:#7C3AED;          /* violeta */
+  --fiesta:linear-gradient(120deg,#4F46E5 0%,#7C3AED 100%);
+  --fiesta-sua:linear-gradient(120deg,rgba(79,70,229,.08),rgba(124,58,237,.06));
 
-  /* Secundario eléctrico */
-  --cielo:#1196C7;       /* cian legible sobre blanco para enlaces/acentos */
-  --electrico:linear-gradient(120deg,#21D4FD 0%,#B721FF 100%);
+  /* Acento frío secundario */
+  --cielo:#0EA5E9;       /* azul cielo, para enlaces/acentos */
+  --electrico:linear-gradient(120deg,#0EA5E9 0%,#6366F1 100%);
 
   /* Estados */
-  --verde:#12B886;
-  --rojo:#E03E5C;
-  --oro:#FFB300;
+  --verde:#10B981;
+  --verde-d:#0B7A5A;
+  --rojo:#E0556E;
+  --oro:#D4A017;
 
   /* Sombra / radio */
   --r:18px;
   --r-g:26px;
-  --sombra:0 10px 30px -12px rgba(26,24,48,.16);
-  --sombra-sutil:0 6px 18px -10px rgba(26,24,48,.18);
-  --sombra-color:0 12px 28px -10px rgba(255,45,135,.45);
+  --sombra:0 10px 30px -14px rgba(22,22,40,.14);
+  --sombra-sutil:0 5px 16px -10px rgba(22,22,40,.16);
+  --sombra-color:0 12px 28px -12px rgba(79,70,229,.40);
 
   --fuente:'Inter',ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --display:'Inter',ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -59,11 +61,10 @@ body{
   color:var(--tinta);
   background:var(--fondo);
   background-image:
-    radial-gradient(circle at 12% -8%,rgba(255,45,135,.07),transparent 38%),
-    radial-gradient(circle at 92% 4%,rgba(255,122,26,.06),transparent 36%),
-    radial-gradient(circle at 50% 118%,rgba(33,212,253,.06),transparent 48%),
-    radial-gradient(rgba(26,24,48,.022) 1px,transparent 1px);    /* grano de marca */
-  background-size:auto,auto,auto,22px 22px;
+    radial-gradient(circle at 12% -8%,rgba(79,70,229,.05),transparent 40%),
+    radial-gradient(circle at 92% 2%,rgba(124,58,237,.04),transparent 38%),
+    radial-gradient(rgba(22,22,40,.02) 1px,transparent 1px);    /* grano de marca */
+  background-size:auto,auto,22px 22px;
   background-attachment:fixed;
   min-height:100vh;
   line-height:1.5;
@@ -75,9 +76,9 @@ body{
 body::before{
   content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background-image:
-    radial-gradient(circle at 20% 30%,rgba(255,122,26,.05),transparent 8%),
-    radial-gradient(circle at 80% 70%,rgba(33,212,253,.05),transparent 8%);
-  animation:flotar 14s ease-in-out infinite alternate;
+    radial-gradient(circle at 22% 28%,rgba(79,70,229,.035),transparent 9%),
+    radial-gradient(circle at 80% 72%,rgba(14,165,233,.035),transparent 9%);
+  animation:flotar 16s ease-in-out infinite alternate;
 }
 @keyframes flotar{from{transform:translateY(0)}to{transform:translateY(-22px)}}
 
@@ -243,7 +244,7 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
   font-family:var(--fuente);transition:border-color .18s,box-shadow .18s;
 }
 .campo::placeholder{color:var(--tinta-ten)}
-.campo:focus{outline:none;border-color:var(--g1);box-shadow:0 0 0 4px rgba(255,45,135,.2)}
+.campo:focus{outline:none;border-color:var(--g1);box-shadow:0 0 0 4px rgba(79,70,229,.18)}
 
 .campo-pin-wrap{position:relative}
 .campo-pin{letter-spacing:10px;font-size:22px;text-align:center;font-weight:800}
@@ -282,7 +283,7 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 .btn.violeta:hover::after{left:130%}
 
 .btn.destacar{background:var(--electrico);color:#fff;border:none;
-  box-shadow:0 12px 30px -12px rgba(33,212,253,.6);animation:latido 1.6s ease-in-out infinite}
+  box-shadow:0 12px 30px -12px rgba(14,165,233,.5);animation:latido 1.6s ease-in-out infinite}
 @keyframes latido{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 
 .btn.wsp{background:#25D366;color:#06351E;border:none;font-weight:800}
@@ -366,6 +367,17 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 }
 .cd-banner b{color:var(--tinta)}
 
+.aviso-faltan{
+  background:var(--fiesta-sua);border:1px solid var(--borde-fuerte);border-radius:14px;
+  padding:11px 14px;font-size:13px;color:var(--tinta-sua);margin-bottom:14px;
+  position:relative;z-index:1;animation:emerge .4s var(--ease-entra) both;
+}
+.aviso-faltan b{color:var(--g1);font-weight:800}
+.aviso-faltan.completo{
+  background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);
+}
+.aviso-faltan.completo b{color:var(--verde-d,#0B7A5A)}
+
 .foja{display:flex;flex-direction:column;gap:11px;position:relative;z-index:1}
 
 .partido{
@@ -416,7 +428,7 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 }
 .stepper button:hover:not(:disabled){
   background:var(--fiesta);border-color:transparent;color:#fff;
-  transform:scale(1.12);box-shadow:0 6px 14px -6px rgba(255,45,135,.55);
+  transform:scale(1.12);box-shadow:0 6px 14px -6px rgba(79,70,229,.45);
 }
 .stepper button:active:not(:disabled){transform:scale(.88)}
 .stepper button:disabled{opacity:.28;cursor:not-allowed}
@@ -429,7 +441,7 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 }
 .gol.con{
   color:#fff;border-color:transparent;
-  background:var(--fiesta);box-shadow:0 6px 16px -8px rgba(255,45,135,.5);
+  background:var(--fiesta);box-shadow:0 6px 16px -8px rgba(79,70,229,.42);
 }
 .gol.flip{animation:golpe-num .42s var(--ease-vivo)}
 @keyframes golpe-num{
@@ -500,8 +512,8 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 .fila.yo{
   position:sticky;top:64px;z-index:5;
   border-color:var(--g1);
-  background:linear-gradient(100deg,rgba(255,45,135,.10),var(--carta));
-  box-shadow:0 8px 24px -12px rgba(255,45,135,.45),0 0 0 1px rgba(255,45,135,.22) inset;
+  background:linear-gradient(100deg,rgba(79,70,229,.08),var(--carta));
+  box-shadow:0 8px 24px -12px rgba(79,70,229,.38),0 0 0 1px rgba(79,70,229,.20) inset;
 }
 .fila.yo .nom::after{
   content:"tú";font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
@@ -613,8 +625,8 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
   position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:22px;
   background:
-    radial-gradient(circle at 30% 20%,rgba(255,45,135,.12),transparent 50%),
-    radial-gradient(circle at 75% 80%,rgba(33,212,253,.10),transparent 50%),
+    radial-gradient(circle at 30% 20%,rgba(79,70,229,.10),transparent 50%),
+    radial-gradient(circle at 75% 80%,rgba(14,165,233,.08),transparent 50%),
     var(--fondo);
   transition:opacity .5s var(--ease-suave),visibility .5s;
 }
@@ -640,6 +652,12 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
 .splash-puntos i:nth-child(2){background:var(--g2);animation-delay:.15s}
 .splash-puntos i:nth-child(3){background:var(--g3);animation-delay:.3s}
 @keyframes salto-punto{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-10px);opacity:1}}
+.splash-aviso{
+  position:absolute;bottom:64px;left:0;right:0;text-align:center;padding:0 32px;
+  color:var(--tinta-ten);font-size:13px;font-weight:500;
+  opacity:0;transform:translateY(6px);transition:opacity .5s var(--ease-suave),transform .5s var(--ease-suave);
+}
+.splash-aviso.visible{opacity:1;transform:none}
 
 /* ---------- Spinner inline para botones ocupados ---------- */
 .spin{

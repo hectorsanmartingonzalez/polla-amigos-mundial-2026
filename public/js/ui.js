@@ -18,7 +18,7 @@ export function toast(msg, error = false) {
 }
 
 /* ---------- Celebración: explosión de confeti + mensaje ---------- */
-const COLORES = ["#FF2D87", "#FF7A1A", "#F5A800", "#21D4FD", "#B721FF", "#12B886"];
+const COLORES = ["#4F46E5", "#7C3AED", "#6366F1", "#0EA5E9", "#10B981", "#D4A017"];
 
 function lanzarConfeti(capa, cantidad) {
   const frag = document.createDocumentFragment();

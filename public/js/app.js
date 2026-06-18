@@ -307,9 +307,19 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 /* Oculta el splash una vez que la app está lista */
+let avisoColdT = null;
 function ocultarSplash() {
+  clearTimeout(avisoColdT);
   const s = document.getElementById("splash");
   if (s) { s.classList.add("fuera"); setTimeout(() => s.remove(), 600); }
+}
+
+/* Si la primera carga tarda (Render despierta del reposo), tranquiliza al usuario */
+function armarAvisoColdStart() {
+  avisoColdT = setTimeout(() => {
+    const a = document.getElementById("splash-aviso");
+    if (a) a.classList.add("visible");
+  }, 3500);
 }
 
 /* ============================================================
@@ -318,6 +328,7 @@ function ocultarSplash() {
 cargarIdentidad();
 render();
 if (apiOk()) {
+  armarAvisoColdStart();
   cargar(false).finally(() => setTimeout(ocultarSplash, 350));
 } else {
   setTimeout(ocultarSplash, 600);

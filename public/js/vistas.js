@@ -80,10 +80,11 @@ export function vInicio() {
     <input id="reg-n" class="campo" placeholder="Ej: Marcelo" maxlength="40" autocomplete="given-name">
     <label class="eti" for="reg-a">Apellido</label>
     <input id="reg-a" class="campo" placeholder="Ej: Carranza" maxlength="40" autocomplete="family-name">
-    <label class="eti" for="reg-p">Crea tu PIN (4 dígitos)</label>
+    <label class="eti" for="reg-p">Inventa un PIN de 4 dígitos</label>
     ${campoPin_("reg-p")}
-    <p class="parrafo" style="font-size:12px;margin:8px 0 0">Guárdalo bien: te servirá para entrar
-    desde otros teléfonos y nadie más podrá tocar tus predicciones.</p>
+    <p class="parrafo" style="font-size:12px;margin:8px 0 0">Elige 4 números que recuerdes (ej: 1234).
+    Es tu llave: lo necesitarás para entrar desde otro teléfono y para que nadie más toque tus
+    predicciones. No uses tu clave del banco.</p>
     <div style="display:flex;gap:8px;margin-top:18px">
       <button class="btn fantasma" style="flex:1" data-act="reg-off" type="button">Volver</button>
       <button class="btn violeta" style="flex:2" data-act="registrar" type="button"${S.guardando ? " disabled" : ""}>
@@ -159,6 +160,15 @@ export function vPred() {
   <div class="foja-info"><span class="gl">Grupo ${S.grupo}</span>
     <span class="fj">${idx + 1} / 12 grupos · ${comp}/72</span></div>
   <div class="barra"><div style="width:${(comp / 72) * 100}%"></div></div>`;
+
+  /* Recordatorio accionable: partidos aún abiertos sin predecir */
+  if (faltan > 0) {
+    h += `<div class="aviso-faltan">✍️ Te faltan <b>${faltan}</b> ${faltan === 1 ? "predicción" : "predicciones"}
+      de partidos que aún puedes jugar. ¡No los dejes pasar!</div>`;
+  } else if (comp === 72) {
+    h += `<div class="aviso-faltan completo">✅ ¡Tienes las 72 predicciones listas! Puedes ajustarlas
+      hasta que cada partido empiece.</div>`;
+  }
 
   const prox = proximoCierre();
   if (prox) {
@@ -280,7 +290,8 @@ export function vTabla() {
   <div class="eyebrow">Tabla en vivo · ${jugados}/72 cargados
     <button class="btn-mini" type="button" style="margin-left:auto" data-act="refresh">↻ Actualizar</button>
   </div>`;
-  if (!filas.length) listaH += `<p class="vacio">Sin jugadores todavía.</p>`;
+  if (!filas.length) listaH += `<p class="vacio">🏁 La tabla está lista para arrancar.<br>
+    Cuando se inscriban los jugadores y empiecen los partidos, aquí verás quién va ganando.</p>`;
   filas.forEach((f, i) => {
     const estado = f.u.submittedAt
       ? `✓ confirmadas`

@@ -33,7 +33,7 @@ const i = vInicio(), p = vPred(), t = vTabla();
 ok(i.includes("Jugadores") && i.includes("Franco") && i.includes("PIN"), "vInicio renderiza lista de jugadores y PIN");
 ok(i.includes("La cuota") && i.includes("confirmó primero"), "bloque de cuota y regla de desempate visibles");
 S.registrando = true;
-ok(vInicio().includes("Crea tu PIN"), "inscripción pide crear PIN");
+ok(vInicio().includes("Inventa un PIN"), "inscripción pide crear PIN");
 S.registrando = false; S.pidiendoPin = "a";
 ok(vInicio().includes("Ingresa tu PIN"), "vista de ingreso de PIN");
 S.pidiendoPin = null;
