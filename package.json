@@ -1,0 +1,12 @@
+{
+  "name": "polla-amigos-mundial-2026",
+  "version": "1.0.0",
+  "description": "Polla entre amigos para el Mundial 2026: predicciones, tabla en vivo y pozo. PWA sin dependencias, con Google Apps Script como backend.",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/smoke.mjs",
+    "dev": "npx serve public"
+  },
+  "license": "MIT",
+  "private": true
+}

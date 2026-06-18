@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FBFAFF">
+<meta name="description" content="Polla Amigos del Mundial 2026: predice los 72 partidos de grupos, sigue la tabla en vivo y disputa el pozo. 3 pts exacto · 2 diferencia · 1 ganador.">
+<title>Polla Amigos · Mundial 2026</title>
+
+<!-- Para que el link se vea bien en WhatsApp: tras desplegar, reemplaza por tu dominio -->
+<meta property="og:title" content="Polla Amigos · Mundial 2026">
+<meta property="og:description" content="Predice los 72 partidos de grupos y disputa el pozo. ¡Que empiece la fiesta!">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://polla-amigos-mundial-2026.onrender.com/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div id="splash" aria-hidden="true">
+  <svg class="splash-balon" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#FF2D87"/>
+        <stop offset="0.55" stop-color="#FF7A1A"/>
+        <stop offset="1" stop-color="#F5A800"/>
+      </linearGradient>
+    </defs>
+    <g class="aro">
+      <circle cx="54" cy="54" r="46" stroke="url(#sg)" stroke-width="8" stroke-linecap="round"
+        stroke-dasharray="58 30"/>
+    </g>
+    <path d="M54 32 l5.3 10.7 11.8 1 -8.9 7.8 2.7 11.6 -10.9 -6.2 -10.9 6.2 2.7 -11.6 -8.9 -7.8 11.8 -1z"
+      fill="url(#sg)"/>
+  </svg>
+  <div class="splash-marca">Polla Amigos</div>
+  <div class="splash-puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+</div>
+
+<div class="app">
+  <header class="cab">
+    <div class="marca-26" aria-hidden="true">26</div>
+    <div class="rotulo anima1"><span>⚽ Mundial 2026</span><span>Entre amigos</span></div>
+    <h1 class="anima2"><span class="grad">Polla Amigos</span><span class="contorno">Mundial 2026</span></h1>
+    <div class="corbatin" aria-hidden="true"></div>
+    <div class="sub anima3" id="cab-sub">48 selecciones · 72 partidos de la fase de grupos</div>
+  </header>
+
+  <main class="contenido" id="main">
+    <noscript><p class="vacio">Esta app necesita JavaScript activado para funcionar.</p></noscript>
+  </main>
+
+  <nav class="tabs" aria-label="Secciones"><div class="tabs-inner" id="tabs"></div></nav>
+</div>
+
+<div id="avisos" role="status" aria-live="polite"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

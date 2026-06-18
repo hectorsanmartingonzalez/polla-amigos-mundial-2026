@@ -1,0 +1,16 @@
+# Blueprint de Render — despliegue del sitio estático.
+# En Render: New + → Blueprint → conecta este repositorio.
+services:
+  - type: web
+    name: polla-amigos-mundial-2026
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: public
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+      - path: /img/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
