@@ -46,6 +46,24 @@ function configurar() {
   SpreadsheetApp.getActiveSpreadsheet().toast('Pestañas listas: participantes, resultados y detalle ✓', 'Polla Mundial');
 }
 
+/* Borra TODOS los jugadores inscritos (deja los encabezados intactos).
+   Úsalo para empezar de cero. No toca resultados ni el fixture.
+   Ejecútalo desde el editor de Apps Script: selecciona "limpiarJugadores" y pulsa ▶. */
+function limpiarJugadores() {
+  var ss = ss_();
+  var p = ss.getSheetByName(HOJA_P);
+  if (p && p.getLastRow() > 1) {
+    p.getRange(2, 1, p.getLastRow() - 1, p.getLastColumn()).clearContent();
+  }
+  /* En la pestaña detalle, borra las columnas de jugadores (de la 5 en adelante),
+     conservando las 4 primeras (nº, ronda, local, visita). */
+  var d = ss.getSheetByName(HOJA_D);
+  if (d && d.getLastColumn() > 4) {
+    d.getRange(1, 5, d.getMaxRows(), d.getLastColumn() - 4).clear();
+  }
+  SpreadsheetApp.getActiveSpreadsheet().toast('Jugadores borrados. Polla lista para empezar de cero ✓', 'Polla Amigos');
+}
+
 function doGet() {
   ensure_();
   return out_(snapshot_());
@@ -260,10 +278,18 @@ function savePreds_(b) {
     if (locked[key]) return; // partido ya iniciado: se conserva lo anterior
     var v = incoming[key];
     if (v === null) { delete merged[key]; return; }
-    if (Object.prototype.toString.call(v) === '[object Array]' && v.length === 2 &&
-        v[0] === Math.floor(v[0]) && v[1] === Math.floor(v[1]) &&
-        v[0] >= 0 && v[0] <= 15 && v[1] >= 0 && v[1] <= 15) {
-      merged[key] = [v[0], v[1]];
+    if (Object.prototype.toString.call(v) !== '[object Array]') return;
+    var gl = v[0], gv = v[1];
+    /* Marcador válido: dos enteros 0..15 */
+    if (gl === Math.floor(gl) && gv === Math.floor(gv) &&
+        gl >= 0 && gl <= 15 && gv >= 0 && gv <= 15) {
+      if (gl === gv) {
+        /* Empate: puede traer el clasificado por penales ("h" o "a") */
+        var w = (v[2] === 'h' || v[2] === 'a') ? v[2] : null;
+        merged[key] = w ? [gl, gv, w] : [gl, gv];
+      } else {
+        merged[key] = [gl, gv]; // sin empate, se ignora cualquier penal
+      }
     }
   });
 

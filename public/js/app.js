@@ -108,7 +108,7 @@ async function guardar(firmar) {
     S.preds = copia(d.user.preds);
     S.dirty = false;
     render();
-    if (firmar) celebrar("¡Confirmadas!", "Tus 72 predicciones quedaron guardadas"); else toast("Avance guardado ✓");
+    if (firmar) celebrar("¡Confirmadas!", "Tus predicciones quedaron guardadas"); else toast("Avance guardado ✓");
   } catch (_) {
     S.guardando = false;
     toast("Error de conexión al guardar", true);

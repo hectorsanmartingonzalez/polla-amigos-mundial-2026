@@ -52,6 +52,10 @@ Arquitectura: una **planilla de Google** es la base de datos (las predicciones l
 - **PIN olvidado:** cada participante tiene su PIN visible para ti en la columna `pin`; puedes dárselo o cambiarlo.
 - **Eliminar a alguien:** borra su fila en *participantes* (y su columna en *detalle* si quieres limpiar).
 
+## Empezar de cero (borrar jugadores)
+
+Para vaciar la lista de jugadores y empezar limpio: en el editor de Apps Script, selecciona la función **`limpiarJugadores`** en el menú desplegable y pulsa **▶ Ejecutar**. Borra todos los participantes y sus predicciones (deja intactos los encabezados, el fixture y los resultados). Útil al cambiar de fase o para pruebas.
+
 ## ⚠️ Si después modificas `Code.gs`
 
 NO crees una implementación nueva (cambiaría la URL y el sitio quedaría desconectado). Usa: **Implementar → Administrar implementaciones → ✏ → Versión: "Nueva versión" → Implementar**. Así la URL `/exec` se mantiene.

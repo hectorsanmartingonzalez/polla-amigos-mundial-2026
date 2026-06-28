@@ -32,9 +32,6 @@ const campoPin_ = (id) => `
   </div>`;
 
 export function vInicio() {
-  const A = esc(ADMIN_NOMBRE);
-  const Acap = esc(ADMIN_NOMBRE.charAt(0).toUpperCase() + ADMIN_NOMBRE.slice(1));
-
   let bases = `
   <div class="hero-bienvenida">
     <span class="hero-emoji" aria-hidden="true">🏆</span>
@@ -60,9 +57,9 @@ export function vInicio() {
 
   <div class="eyebrow">Cómo se ganan puntos</div>
   <div class="puntaje">
-    <div><b class="pz3">3</b><span>Resultado exacto</span></div>
-    <div><b class="pz2">2</b><span>Diferencia de gol</span></div>
-    <div><b class="pz1">1</b><span>Solo el ganador</span></div>
+    <div><b class="pz3">3<i>pts</i></b><span>Resultado exacto</span></div>
+    <div><b class="pz2">2<i>pts</i></b><span>Diferencia de gol</span></div>
+    <div><b class="pz1">1<i>pt</i></b><span>Solo el ganador</span></div>
   </div>
 
   <div class="demo">
@@ -87,7 +84,7 @@ export function vInicio() {
   <div class="eyebrow">Bueno saber</div>
   <div class="reglas-cards">
     <div class="rc"><span class="rc-ico">⏰</span><div><b>Cada cruce se cierra</b><span>a su hora de inicio. Hasta entonces puedes cambiar tu predicción.</span></div></div>
-    <div class="rc"><span class="rc-ico">🔄</span><div><b>Tabla automática</b><span>${Acap} carga los resultados y todo se actualiza solo.</span></div></div>
+    <div class="rc"><span class="rc-ico">🔄</span><div><b>Tabla en vivo</b><span>A medida que se cargan los resultados, los puntos y la tabla se actualizan solos.</span></div></div>
     <div class="rc"><span class="rc-ico">🔒</span><div><b>Tu PIN te protege</b><span>nadie más puede tocar tus predicciones.</span></div></div>
     <div class="rc"><span class="rc-ico">🥇</span><div><b>Si hay empate de puntos</b><span>gana quien tenga más exactos; si persiste, quien confirmó primero.</span></div></div>
   </div>

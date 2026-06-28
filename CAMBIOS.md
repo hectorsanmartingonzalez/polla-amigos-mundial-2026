@@ -1,5 +1,12 @@
 # Historial de cambios — Polla Amigos
 
+## v2.2 — Correcciones
+
+- **BUG corregido**: las predicciones no se guardaban porque la validación del backend solo aceptaba marcadores de 2 elementos; ahora acepta también el clasificado de penales (empates). Requiere actualizar el `Code.gs` en la planilla.
+- Tarjetas de puntaje ahora muestran "3 pts · 2 pts · 1 pt".
+- Texto "Tabla en vivo" corregido: ya no afirma que el administrador carga los resultados (pueden entrar por API o a mano).
+- Nueva función `limpiarJugadores()` en el backend para empezar de cero con un clic.
+
 ## v2.1 — Inicio explicativo + pulido de accesibilidad
 
 - Pantalla de Inicio rediseñada como onboarding: hero de bienvenida, pasos 1·2·3, mini-demo visual de cómo se predice, regla de penales destacada y reglas en tarjetas con íconos.
