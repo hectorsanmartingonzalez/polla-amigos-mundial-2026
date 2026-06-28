@@ -2,11 +2,11 @@
 
 ![Polla Amigos · Mundial 2026](public/img/og.png)
 
-Polla entre amigos para la Copa del Mundo 2026, con un diseño limpio, festivo y muy cuidado en animaciones. Los participantes **no necesitan crear cuenta de nada**: abren el link, se inscriben con nombre y apellido, predicen los 72 partidos de la fase de grupos y confirman su jugada con un PIN propio. El administrador gestiona todo desde una **planilla de Google** (las predicciones llegan solas; él solo anota resultados y pagos) y la **tabla en vivo** se recalcula automáticamente.
+Polla entre amigos para la Copa del Mundo 2026, con un diseño limpio, festivo y muy cuidado en animaciones. Los participantes **no necesitan crear cuenta de nada**: abren el link, se inscriben con nombre y apellido, predicen los 16 cruces de los dieciseisavos de final y confirman su jugada con un PIN propio. El administrador gestiona todo desde una **planilla de Google** (las predicciones llegan solas; él solo anota resultados y pagos) y la **tabla en vivo** se recalcula automáticamente.
 
 ## Reglas
 
-La cuota de inscripción es de **$15.000 CLP**, pagadera al administrador hasta el día de la final (19 de julio); dentro de la app no se manejan datos bancarios, solo se indica que la cuota se coordina con el administrador. El pozo se reparte por mitades: premio del campeón y fondo de la fiesta final. Puntaje por partido: **3** resultado exacto · **2** diferencia de gol · **1** solo el ganador. Cada partido se cierra a su hora de inicio, con validación también en el servidor (y reloj sincronizado, así que no importa si un teléfono tiene la hora mal).
+La cuota de inscripción es de **$15.000 CLP**, pagadera al administrador hasta el día de la final (19 de julio); dentro de la app no se manejan datos bancarios, solo se indica que la cuota se coordina con el administrador. El **pozo es íntegro para el ganador** (quien sume más puntos al final de los dieciseisavos). Puntaje por partido: **3** resultado exacto · **2** diferencia de gol · **1** solo el ganador. Si predices empate, eliges además quién avanza en penales: **+1 punto** extra si aciertas. Cada partido se cierra a su hora de inicio, con validación también en el servidor (y reloj sincronizado, así que no importa si un teléfono tiene la hora mal).
 
 ## Características
 
@@ -22,7 +22,7 @@ Diseño claro y festivo con una identidad propia (balón-firma, gradiente magent
 │   ├── css/estilos.css       # Sistema de diseño "Fiesta clara"
 │   ├── js/
 │   │   ├── config.js         # ← config del administrador (URL del Apps Script, cuota)
-│   │   ├── datos.js          # Selecciones y fixture oficial (72 partidos)
+│   │   ├── datos.js          # Selecciones y fixture (16 dieciseisavos)
 │   │   ├── util.js           # Formato, puntaje, reloj sincronizado y cuentas regresivas
 │   │   ├── api.js            # Cliente del Apps Script
 │   │   ├── estado.js         # Estado de la aplicación
@@ -53,4 +53,4 @@ node scripts/smoke.mjs  # pruebas de puntaje y vistas
 
 ## Créditos
 
-Fixture oficial FIFA 2026 (fase de grupos). Tipografía del sistema (Inter / system-ui). Código bajo licencia MIT.
+Fixture FIFA 2026 (fase eliminatoria · dieciseisavos). Tipografía del sistema (Inter / system-ui). Código bajo licencia MIT.

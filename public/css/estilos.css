@@ -201,6 +201,87 @@ a:hover{text-decoration:underline}
 .pz2{background:var(--electrico);-webkit-background-clip:text;background-clip:text;color:transparent}
 .pz1{color:var(--tinta-sua)}
 
+/* ============================================================
+   INICIO — onboarding (hero, pasos, demo, reglas)
+   ============================================================ */
+.hero-bienvenida{
+  text-align:center;padding:6px 4px 20px;
+  animation:subir .5s var(--ease-entra) both;
+}
+.hero-emoji{font-size:42px;line-height:1;display:inline-block;animation:saltar 1.4s var(--ease-suave) infinite}
+.hero-bienvenida h2{
+  margin:8px 0 6px;font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:-.5px;
+}
+.hero-bienvenida p{margin:0;color:var(--tinta-sua);font-size:14px;line-height:1.5}
+.hero-bienvenida b{color:var(--tinta)}
+
+/* Pasos 1·2·3 */
+.pasos{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:10px}
+.paso{
+  display:flex;align-items:center;gap:14px;
+  background:var(--carta-2);border:1px solid var(--borde);border-radius:16px;padding:14px;
+  animation:entrar .45s var(--ease-entra) both;transition:transform .2s var(--ease-suave),border-color .2s;
+}
+.paso:nth-child(1){animation-delay:.05s}
+.paso:nth-child(2){animation-delay:.12s}
+.paso:nth-child(3){animation-delay:.19s}
+.paso:hover{transform:translateX(3px);border-color:var(--borde-fuerte)}
+.paso-num{
+  flex:0 0 auto;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:900;font-size:17px;color:#fff;background:var(--fiesta);
+  box-shadow:var(--sombra-color);
+}
+.paso-txt{display:flex;flex-direction:column;gap:2px}
+.paso-txt b{font-size:14.5px;font-weight:800}
+.paso-txt span{font-size:12.5px;color:var(--tinta-sua);line-height:1.4}
+
+/* Mini demo de predicción */
+.demo{
+  background:var(--carta-2);border:1px dashed var(--borde-fuerte);border-radius:18px;
+  padding:14px;margin:4px 0 14px;animation:emerge .5s var(--ease-entra) both;
+}
+.demo-cap{font-size:12px;font-weight:700;color:var(--tinta-ten);text-align:center;margin-bottom:10px}
+.demo-match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.demo-eq{display:flex;flex-direction:column;align-items:center;gap:4px}
+.demo-bandera{font-size:30px;line-height:1;filter:drop-shadow(0 2px 5px rgba(22,22,40,.2))}
+.demo-nom{font-size:11.5px;font-weight:700;color:var(--tinta-sua)}
+.demo-marc{display:flex;align-items:center;gap:6px}
+.demo-gol{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:900;font-size:22px;color:#fff;border-radius:11px;
+  background:var(--fiesta);box-shadow:0 5px 14px -7px rgba(79,70,229,.5);
+  animation:demo-pop 2.4s var(--ease-vivo) infinite;
+}
+.demo-gol:last-child{animation-delay:.3s}
+@keyframes demo-pop{0%,82%,100%{transform:scale(1)}88%{transform:scale(1.12)}94%{transform:scale(.97)}}
+.demo-guion{color:var(--tinta-ten);font-weight:800;font-size:16px}
+.demo-nota{font-size:12px;color:var(--tinta-sua);text-align:center;margin-top:11px;line-height:1.4}
+.demo-nota b{color:var(--g1);font-weight:800}
+
+/* Regla destacada de penales */
+.regla-pen{
+  display:flex;gap:13px;align-items:flex-start;
+  background:linear-gradient(120deg,rgba(79,70,229,.08),rgba(14,165,233,.06));
+  border:1px solid var(--borde-fuerte);border-radius:18px;padding:15px;margin-bottom:16px;
+  animation:emerge .5s .1s var(--ease-entra) both;
+}
+.regla-pen-ico{font-size:26px;line-height:1;flex:0 0 auto}
+.regla-pen b{font-size:14.5px;font-weight:800;display:block;margin-bottom:3px}
+.regla-pen p{margin:0;font-size:12.5px;color:var(--tinta-sua);line-height:1.5}
+.regla-pen p b{display:inline;color:var(--g1)}
+
+/* Tarjetas de reglas con íconos */
+.reglas-cards{display:grid;gap:8px;margin-bottom:18px}
+.rc{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--carta-2);border:1px solid var(--borde);border-radius:14px;padding:12px 13px;
+  transition:transform .2s var(--ease-suave),border-color .2s;
+}
+.rc:hover{transform:translateX(2px);border-color:var(--borde-fuerte)}
+.rc-ico{font-size:20px;line-height:1.2;flex:0 0 auto}
+.rc b{font-size:13.5px;font-weight:800;display:block}
+.rc span{font-size:12px;color:var(--tinta-sua);line-height:1.4;display:block;margin-top:1px}
+
 /* Bloque de cuota (reemplaza datos de pago) */
 .cuota-caja{
   background:var(--fiesta-sua);border:1px solid var(--borde-fuerte);
@@ -460,11 +541,55 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
   animation:pop-pts .5s var(--ease-vivo) both}
 @keyframes pop-pts{0%{opacity:0;transform:scale(.5) translateY(4px)}60%{transform:scale(1.15)}100%{opacity:1;transform:scale(1)}}
 .chip-pts.p3{background:var(--verde);box-shadow:0 4px 12px -4px rgba(18,184,134,.6)}
+.chip-pts.p4{background:linear-gradient(120deg,var(--verde),#0EA5E9);color:#fff;
+  box-shadow:0 4px 14px -4px rgba(14,165,233,.7);font-weight:900}
 .chip-pts.p2{background:var(--cielo);color:#fff}
 .chip-pts.p1{background:var(--oro)}
 .chip-pts.p0{background:var(--tinta-ten);color:#fff}
 
-.nav-grupos{display:grid;grid-template-columns:56px 1fr;gap:10px;margin:18px 0}
+/* ----- Selector de penales (aparece en empates) ----- */
+.penales{
+  margin-top:11px;padding-top:11px;border-top:1px dashed var(--borde);
+  animation:emerge .35s var(--ease-entra) both;
+}
+.pen-label{display:block;font-size:11.5px;font-weight:700;color:var(--tinta-sua);margin-bottom:8px;text-align:center}
+.pen-label em{font-style:normal;color:var(--g1);font-weight:800}
+.penales.pendiente{
+  margin:11px -4px 0;padding:11px 8px 4px;border-radius:12px;
+  background:rgba(79,70,229,.05);
+  animation:emerge .35s var(--ease-entra) both, pen-late 2s var(--ease-suave) infinite .4s;
+}
+@keyframes pen-late{0%,100%{background:rgba(79,70,229,.05)}50%{background:rgba(79,70,229,.10)}}
+.pen-ops{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pen-op{
+  border:1.5px solid var(--borde);background:var(--carta-2);color:var(--tinta-sua);
+  border-radius:12px;padding:9px 8px;font-size:12.5px;font-weight:700;cursor:pointer;
+  font-family:var(--fuente);transition:all .18s var(--ease-suave);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-tap-highlight-color:transparent;
+}
+.pen-op:hover:not(:disabled){border-color:var(--borde-fuerte);color:var(--tinta)}
+.pen-op:active:not(:disabled){transform:scale(.96)}
+.pen-op.act{
+  background:var(--fiesta);border-color:transparent;color:#fff;
+  box-shadow:0 6px 16px -8px rgba(79,70,229,.5);
+}
+.pen-op:disabled{opacity:.5;cursor:not-allowed}
+
+/* ----- Rótulo "Rival por definir" + tarjeta TBD ----- */
+.porded{color:var(--tinta-ten);font-weight:800;font-style:italic}
+.partido.tbd{opacity:.72;background:repeating-linear-gradient(135deg,var(--carta),var(--carta) 12px,var(--carta-2) 12px,var(--carta-2) 24px)}
+.partido.tbd .stepper button{opacity:.4}
+
+/* ----- Pista del cruce (sub-rótulo opcional) ----- */
+.pista{
+  display:inline-block;font-size:10px;font-weight:700;color:var(--tinta-ten);
+  background:var(--carta-2);border:1px solid var(--borde);border-radius:99px;
+  padding:1px 8px;margin-left:6px;
+}
+
+/* ----- Pie del pozo (reemplaza el reparto por mitades) ----- */
+.pozo-pie{font-size:12px;color:var(--tinta-sua);margin-top:14px;line-height:1.5;font-weight:500}
+
 .acciones-acta{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
 .acciones-copia{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;margin-top:12px}
 

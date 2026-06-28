@@ -1,10 +1,10 @@
 /* Vistas: funciones puras que devuelven HTML (sin tocar el DOM). */
-import { T, GROUPS, M, matchesOf } from "./datos.js";
+import { T, M, RONDA_NOMBRE, PISTAS, tienePendiente, TOTAL } from "./datos.js";
 import { S, me } from "./estado.js";
 import { CUOTA, FECHA_LIMITE_PAGO, ADMIN_NOMBRE } from "./config.js";
 import {
-  esc, clp, fmtDia, fmtHora, fmtFirma, isLocked, pts, ahora,
-  completa, predsCount, abiertasSinPred, grupoCompleto, restante, proximoCierre
+  esc, clp, fmtDia, fmtHora, fmtFirma, isLocked, pts, ahora, esEmpatePred,
+  completa, predsCount, abiertasSinPred, restante, proximoCierre
 } from "./util.js";
 import { skel, spinner } from "./ui.js";
 
@@ -18,8 +18,8 @@ function bloqueCuota_() {
     <div class="cuota-monto">${clp(CUOTA)}</div>
     <p>Coordina el pago directamente con <b>${esc(ADMIN_NOMBRE)}</b> (en persona o por
     transferencia). Tienes plazo hasta el día de la final, el <b>${FECHA_LIMITE_PAGO}</b>.</p>
-    <p style="margin-top:8px">El pozo se reparte por mitades: <b>la mitad premia al campeón</b>
-    de la polla y <b>la otra mitad financia la fiesta final</b> 🎉</p>
+    <p style="margin-top:8px"><b>El pozo completo es para el ganador</b> 🏆 — quien sume más puntos
+    al término de los dieciseisavos se lo lleva todo.</p>
   </div>`;
 }
 
@@ -32,20 +32,66 @@ const campoPin_ = (id) => `
   </div>`;
 
 export function vInicio() {
+  const A = esc(ADMIN_NOMBRE);
+  const Acap = esc(ADMIN_NOMBRE.charAt(0).toUpperCase() + ADMIN_NOMBRE.slice(1));
+
   let bases = `
-  <div class="eyebrow">Cómo se juega</div>
-  <p class="parrafo">Predice el marcador de <b>los 72 partidos de la fase de grupos</b>,
-  grupo por grupo. Ganas puntos según qué tan cerca quedes del resultado real:</p>
+  <div class="hero-bienvenida">
+    <span class="hero-emoji" aria-hidden="true">🏆</span>
+    <h2>¡Bienvenido a la polla!</h2>
+    <p>Predice los <b>16 cruces de dieciseisavos</b> y compite con tus amigos por el pozo.</p>
+  </div>
+
+  <div class="eyebrow">Empezar es muy fácil</div>
+  <ol class="pasos">
+    <li class="paso">
+      <span class="paso-num">1</span>
+      <div class="paso-txt"><b>Únete</b><span>Pon tu nombre y crea un PIN de 4 dígitos.</span></div>
+    </li>
+    <li class="paso">
+      <span class="paso-num">2</span>
+      <div class="paso-txt"><b>Predice los marcadores</b><span>En la pestaña ⚽ Predicción, elige el resultado de cada cruce.</span></div>
+    </li>
+    <li class="paso">
+      <span class="paso-num">3</span>
+      <div class="paso-txt"><b>Sigue la tabla en vivo</b><span>En 🏆 Tabla ves los puntos y quién va ganando el pozo.</span></div>
+    </li>
+  </ol>
+
+  <div class="eyebrow">Cómo se ganan puntos</div>
   <div class="puntaje">
     <div><b class="pz3">3</b><span>Resultado exacto</span></div>
     <div><b class="pz2">2</b><span>Diferencia de gol</span></div>
     <div><b class="pz1">1</b><span>Solo el ganador</span></div>
   </div>
-  <p class="parrafo" style="font-size:12.5px">Cada partido se cierra a su hora de inicio: hasta
-  entonces puedes cambiar tu predicción. ${esc(ADMIN_NOMBRE.charAt(0).toUpperCase() + ADMIN_NOMBRE.slice(1))}
-  carga los resultados y la tabla se actualiza sola. <b>Desempate:</b> más resultados exactos;
-  luego más aciertos de diferencia; si persiste, gana quien <b>confirmó primero</b>. Tus
-  predicciones quedan protegidas con un <b>PIN de 4 dígitos</b> que solo tú conoces.</p>
+
+  <div class="demo">
+    <div class="demo-cap">Así se ve una predicción 👇</div>
+    <div class="demo-match">
+      <div class="demo-eq"><span class="demo-bandera">${T.BRA[1]}</span><span class="demo-nom">Brasil</span></div>
+      <div class="demo-marc"><span class="demo-gol">2</span><span class="demo-guion">–</span><span class="demo-gol">1</span></div>
+      <div class="demo-eq"><span class="demo-bandera">${T.JPN[1]}</span><span class="demo-nom">Japón</span></div>
+    </div>
+    <div class="demo-nota">Tocas <b>+</b> y <b>−</b> para poner el marcador que crees que pasará.</div>
+  </div>
+
+  <div class="regla-pen">
+    <div class="regla-pen-ico" aria-hidden="true">⚖️</div>
+    <div>
+      <b>¿Empate? Hay un punto extra</b>
+      <p>Como es eliminatoria, si predices un empate eliges además <b>quién avanza en los penales</b>.
+      Si aciertas el clasificado, sumas <b>+1 punto</b> 🎯</p>
+    </div>
+  </div>
+
+  <div class="eyebrow">Bueno saber</div>
+  <div class="reglas-cards">
+    <div class="rc"><span class="rc-ico">⏰</span><div><b>Cada cruce se cierra</b><span>a su hora de inicio. Hasta entonces puedes cambiar tu predicción.</span></div></div>
+    <div class="rc"><span class="rc-ico">🔄</span><div><b>Tabla automática</b><span>${Acap} carga los resultados y todo se actualiza solo.</span></div></div>
+    <div class="rc"><span class="rc-ico">🔒</span><div><b>Tu PIN te protege</b><span>nadie más puede tocar tus predicciones.</span></div></div>
+    <div class="rc"><span class="rc-ico">🥇</span><div><b>Si hay empate de puntos</b><span>gana quien tenga más exactos; si persiste, quien confirmó primero.</span></div></div>
+  </div>
+
   ${bloqueCuota_()}`;
 
   let comparece = `<hr class="doblelinea solo-movil"><div class="eyebrow">Jugadores</div>`;
@@ -103,7 +149,7 @@ export function vInicio() {
       comparece += `<button class="persona" data-act="soy" data-id="${esc(u.id)}" type="button"
         style="animation-delay:${i * 0.04}s">
         <span>${esc(u.nombre)} ${esc(u.apellido)}</span>
-        <small>${predsCount(u.preds || {})}/72</small></button>`;
+        <small>${predsCount(u.preds || {})}/${TOTAL}</small></button>`;
     });
     comparece += `</div>`;
   } else {
@@ -111,7 +157,7 @@ export function vInicio() {
   }
   comparece += `<button class="btn violeta" style="margin-top:10px;width:100%" data-act="reg-on" type="button">
     Unirme a la polla</button>
-  <footer class="pie">Polla entre amigos · v1.0 · 🇨🇦 🇺🇸 🇲🇽</footer>`;
+  <footer class="pie">Polla entre amigos · Dieciseisavos · 🇨🇦 🇺🇸 🇲🇽</footer>`;
 
   return envolverInicio_(bases, comparece);
 }
@@ -125,13 +171,15 @@ const envolverInicio_ = (bases, comparece) => `
 /* ============================================================
    PREDICCIÓN (fixture por grupo)
    ============================================================ */
-function stepper(mid, lado, val, cerrado, flash) {
+function stepper(mid, lado, val, cerrado, flash, equipo) {
+  const q = equipo ? " de " + equipo : "";
   return `<div class="stepper">
     <button type="button" data-act="step" data-m="${mid}" data-s="${lado}" data-d="1"
-      ${cerrado ? "disabled" : ""} aria-label="sumar gol">+</button>
-    <div class="gol${val != null ? " con" : ""}${flash ? " flip" : ""}" aria-live="off">${val == null ? "·" : val}</div>
+      ${cerrado ? "disabled" : ""} aria-label="sumar gol${q}">+</button>
+    <div class="gol${val != null ? " con" : ""}${flash ? " flip" : ""}" aria-live="off"
+      aria-label="${val == null ? "sin marcador" : val + " goles" + q}">${val == null ? "·" : val}</div>
     <button type="button" data-act="step" data-m="${mid}" data-s="${lado}" data-d="-1"
-      ${(cerrado || val == null || val === 0) ? "disabled" : ""} aria-label="restar gol">−</button>
+      ${(cerrado || val == null || val === 0) ? "disabled" : ""} aria-label="restar gol${q}">−</button>
   </div>`;
 }
 
@@ -141,32 +189,27 @@ export function vPred() {
     return `<div class="vacio">Primero entra o únete en la pestaña
       <b>Inicio</b> para ingresar tus predicciones.</div>`;
   }
-  const idx = GROUPS.indexOf(S.grupo);
-  const lista = matchesOf(S.grupo);
+  const lista = M;
+  const total = lista.length;
   const comp = predsCount(S.preds);
   const faltan = abiertasSinPred(S.preds);
   const listo = faltan === 0 && comp > 0;
   const now = ahora();
+  const pendientes = lista.filter((m) => tienePendiente(m)).length;
 
-  let h = `<div class="pred-wrap"><div class="marca-grupo" data-g="${S.grupo}">${S.grupo}</div>`;
+  let h = `<div class="pred-wrap">`;
 
-  h += `<div class="riel" role="tablist" aria-label="Grupos">`;
-  GROUPS.forEach((g) => {
-    h += `<button type="button" role="tab" aria-selected="${g === S.grupo}"
-      data-act="grupo" data-g="${g}"
-      class="${g === S.grupo ? "activo " : ""}${grupoCompleto(g, S.preds) ? "lleno" : ""}">${g}</button>`;
-  });
-  h += `</div>
-  <div class="foja-info"><span class="gl">Grupo ${S.grupo}</span>
-    <span class="fj">${idx + 1} / 12 grupos · ${comp}/72</span></div>
-  <div class="barra"><div style="width:${(comp / 72) * 100}%"></div></div>`;
+  h += `<div class="foja-info"><span class="gl">${RONDA_NOMBRE}</span>
+    <span class="fj">${comp}/${total} predicciones</span></div>
+  <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${comp}"
+    aria-label="Predicciones completadas"><div style="width:${(comp / total) * 100}%"></div></div>`;
 
-  /* Recordatorio accionable: partidos aún abiertos sin predecir */
+  /* Recordatorio accionable */
   if (faltan > 0) {
     h += `<div class="aviso-faltan">✍️ Te faltan <b>${faltan}</b> ${faltan === 1 ? "predicción" : "predicciones"}
-      de partidos que aún puedes jugar. ¡No los dejes pasar!</div>`;
-  } else if (comp === 72) {
-    h += `<div class="aviso-faltan completo">✅ ¡Tienes las 72 predicciones listas! Puedes ajustarlas
+      de partidos que aún puedes jugar.${pendientes ? ` Hay <b>${pendientes}</b> con rival por definir.` : ""}</div>`;
+  } else if (comp === total) {
+    h += `<div class="aviso-faltan completo">✅ ¡Tienes tus ${total} predicciones listas! Puedes ajustarlas
       hasta que cada partido empiece.</div>`;
   }
 
@@ -178,51 +221,64 @@ export function vPred() {
 
   h += `<div class="foja">`;
   lista.forEach((m, i) => {
-    const p = S.preds[m.id] || [null, null];
+    const p = S.preds[m.id] || [null, null, null];
     const cerrado = isLocked(m);
+    const tbd = tienePendiente(m);
     const real = S.results[m.id];
     const ppts = pts(p, real);
     const hecha = completa(p);
     const f0 = S.flash && S.flash[0] === m.id && S.flash[1] === 0;
     const f1 = S.flash && S.flash[0] === m.id && S.flash[1] === 1;
     const tCierre = m.ms - now;
-    const chipCierre = !cerrado && tCierre < 24 * 3600e3
+    const chipCierre = !cerrado && !tbd && tCierre < 24 * 3600e3
       ? ` · <span class="cd">cierra en ${restante(tCierre)}</span>` : "";
+    const bloqueado = cerrado || tbd;
+    const pista = PISTAS[m.n] ? `<span class="pista">${PISTAS[m.n]}</span>` : "";
 
-    h += `<div class="partido${hecha && !cerrado ? " ok" : ""}${cerrado ? " cerrado" : ""}"
+    h += `<div class="partido${hecha && !cerrado ? " ok" : ""}${cerrado ? " cerrado" : ""}${tbd ? " tbd" : ""}"
         style="animation-delay:${i * 0.05}s">
       <div class="meta"><span>Nº ${m.n} · ${esc(fmtDia(m.utc))} · ${esc(fmtHora(m.utc))}${chipCierre}</span>
-        ${cerrado
-          ? `<span class="cierre">${real ? "Jugado" : "En juego"}</span>`
-          : hecha ? `<span class="enacta">Listo ✓</span>` : `<span>Pendiente</span>`}
+        ${tbd
+          ? `<span class="porded">Rival por definir</span>`
+          : cerrado
+            ? `<span class="cierre">${real ? "Jugado" : "En juego"}</span>`
+            : hecha ? `<span class="enacta">Listo ✓</span>` : `<span>Pendiente</span>`}
       </div>
       <div class="versus">
-        <div class="equipo"><div class="bandera">${T[m.h][1]}</div>
+        <div class="equipo"><div class="bandera" aria-hidden="true">${T[m.h][1]}</div>
           <div class="nombre">${esc(T[m.h][0])}</div></div>
         <div class="marcador">
-          ${stepper(m.id, 0, p[0], cerrado, f0)}<span class="guion">–</span>${stepper(m.id, 1, p[1], cerrado, f1)}
+          ${stepper(m.id, 0, p[0], bloqueado, f0, esc(T[m.h][0]))}<span class="guion" aria-hidden="true">–</span>${stepper(m.id, 1, p[1], bloqueado, f1, esc(T[m.a][0]))}
         </div>
-        <div class="equipo"><div class="bandera">${T[m.a][1]}</div>
+        <div class="equipo"><div class="bandera" aria-hidden="true">${T[m.a][1]}</div>
           <div class="nombre">${esc(T[m.a][0])}</div></div>
       </div>`;
+
+    /* Selector de penales: aparece cuando la predicción es un empate */
+    if (esEmpatePred(p) && !tbd) {
+      const sel = p[2];
+      h += `<div class="penales${!sel && !bloqueado ? " pendiente" : ""}">
+        <span class="pen-label" id="penlbl-${m.id}">⚖️ Empate: ¿quién avanza en penales?${!sel && !bloqueado ? " <em>elige uno</em>" : ""}</span>
+        <div class="pen-ops" role="group" aria-labelledby="penlbl-${m.id}">
+          <button type="button" class="pen-op${sel === "h" ? " act" : ""}" data-act="penal" data-m="${m.id}" data-w="h"
+            aria-pressed="${sel === "h"}" ${bloqueado ? "disabled" : ""}>${T[m.h][1]} ${esc(T[m.h][0])}</button>
+          <button type="button" class="pen-op${sel === "a" ? " act" : ""}" data-act="penal" data-m="${m.id}" data-w="a"
+            aria-pressed="${sel === "a"}" ${bloqueado ? "disabled" : ""}>${T[m.a][1]} ${esc(T[m.a][0])}</button>
+        </div>
+      </div>`;
+    }
+
     if (real && real[0] != null) {
-      h += `<div class="resultado-real">Resultado: <b>${real[0]}–${real[1]}</b>
+      const penReal = real[0] === real[1] && real[2]
+        ? ` · pasa ${esc(T[m[real[2] === "h" ? "h" : "a"]][0])} 🥅` : "";
+      h += `<div class="resultado-real">Resultado: <b>${real[0]}–${real[1]}</b>${penReal}
         ${ppts != null ? `<span class="chip-pts p${ppts}">+${ppts} pts</span>` : ""}</div>`;
     }
     h += `</div>`;
   });
   h += `</div>`;
 
-  const grupoListo = grupoCompleto(S.grupo, S.preds);
   h += `
-  <div class="nav-grupos">
-    <button class="btn fantasma" type="button"
-      data-act="grupo" data-g="${idx > 0 ? GROUPS[idx - 1] : ""}" ${idx === 0 ? "disabled" : ""}
-      aria-label="grupo anterior">←</button>
-    <button class="btn${grupoListo && idx < 11 ? " destacar" : ""}" type="button"
-      data-act="grupo" data-g="${idx < 11 ? GROUPS[idx + 1] : ""}" ${idx === 11 ? "disabled" : ""}>
-      Siguiente grupo${idx < 11 ? " (" + GROUPS[idx + 1] + ")" : ""}</button>
-  </div>
   <hr class="doblelinea">
   <div class="acciones-acta">
     <button class="btn fantasma" type="button"
@@ -254,17 +310,27 @@ export function vTabla() {
     return skel(150) + skel(20, "55%", "margin:18px 0 12px") + skel(62) + skel(62) + skel(62);
   }
   const filas = S.users.map((u) => {
-    let total = 0, c3 = 0, c2 = 0, c1 = 0;
+    let total = 0, c3 = 0, c2 = 0, c1 = 0, pen = 0;
     M.forEach((m) => {
-      const p = pts((u.preds || {})[m.id], S.results[m.id]);
-      if (p === 3) { total += 3; c3++; } else if (p === 2) { total += 2; c2++; }
-      else if (p === 1) { total += 1; c1++; }
+      const real = S.results[m.id];
+      const p = pts((u.preds || {})[m.id], real);
+      if (p == null) return;
+      total += p;
+      /* Clasificación del acierto base (sin el bonus) para mostrar y desempatar */
+      const pred = (u.preds || {})[m.id];
+      if (pred && real && pred[0] != null && real[0] != null) {
+        const exacto = pred[0] === real[0] && pred[1] === real[1];
+        const dif = pred[0] - pred[1] === real[0] - real[1];
+        const gana = Math.sign(pred[0] - pred[1]) === Math.sign(real[0] - real[1]);
+        if (exacto) c3++; else if (dif) c2++; else if (gana) c1++;
+        if (pred[0] === pred[1] && real[0] === real[1] && pred[2] && pred[2] === real[2]) pen++;
+      }
     });
-    return { u, total, c3, c2, c1 };
+    return { u, total, c3, c2, c1, pen };
   });
-  /* Desempate: puntos → exactos → diferencias → quien confirmó primero → alfabético */
+  /* Desempate: puntos → exactos → diferencias → aciertos de penales → confirmó primero → alfabético */
   filas.sort((a, b) =>
-    b.total - a.total || b.c3 - a.c3 || b.c2 - a.c2 ||
+    b.total - a.total || b.c3 - a.c3 || b.c2 - a.c2 || b.pen - a.pen ||
     ((a.u.submittedAt || Infinity) - (b.u.submittedAt || Infinity)) ||
     (a.u.apellido + a.u.nombre).localeCompare(b.u.apellido + b.u.nombre));
 
@@ -275,19 +341,16 @@ export function vTabla() {
 
   const lado = `
   <div class="pozo">
-    <div class="titulo">Pozo acumulado · ${pagados} cuota${pagados === 1 ? "" : "s"} pagada${pagados === 1 ? "" : "s"}</div>
+    <div class="titulo">Pozo para el ganador · ${pagados} cuota${pagados === 1 ? "" : "s"} pagada${pagados === 1 ? "" : "s"}</div>
     <div class="monto" id="pozo-monto" data-to="${pozo}" data-clp="${clp(pozo)}">${clp(0)}</div>
-    <div class="reparto">
-      <div><span>🏆 Premio campeón</span><b>${clp(pozo / 2)}</b></div>
-      <div><span>🎉 Fiesta final</span><b>${clp(pozo / 2)}</b></div>
-    </div>
+    <div class="pozo-pie">🏆 Se lo lleva completo quien sume más puntos en los dieciseisavos</div>
   </div>
-  <p class="parrafo nota-cuota">Cuota ${clp(CUOTA)} — se recibe hasta el día de la final
-  (${FECHA_LIMITE_PAGO}). El pozo se reparte por mitades: premio del campeón y fondo de la fiesta.
-  Desempate final: quien confirmó primero.</p>`;
+  <p class="parrafo nota-cuota">Cuota ${clp(CUOTA)} — se recibe hasta el ${FECHA_LIMITE_PAGO}.
+  El pozo es íntegro para el campeón. Desempate: más exactos, luego más diferencias, luego más
+  aciertos de penales, y por último quien confirmó primero.</p>`;
 
   let listaH = `
-  <div class="eyebrow">Tabla en vivo · ${jugados}/72 cargados
+  <div class="eyebrow">Tabla en vivo · ${jugados}/${TOTAL} cargados
     <button class="btn-mini" type="button" style="margin-left:auto" data-act="refresh">↻ Actualizar</button>
   </div>`;
   if (!filas.length) listaH += `<p class="vacio">🏁 La tabla está lista para arrancar.<br>
@@ -295,13 +358,14 @@ export function vTabla() {
   filas.forEach((f, i) => {
     const estado = f.u.submittedAt
       ? `✓ confirmadas`
-      : `${predsCount(f.u.preds || {})}/72 sin confirmar`;
+      : `${predsCount(f.u.preds || {})}/${TOTAL} sin confirmar`;
     const esYo = f.u.id === S.meId;
+    const detPen = f.pen > 0 ? ` · penales ${f.pen}` : "";
     listaH += `<div class="fila${i === 0 && f.total > 0 ? " lider" : ""}${esYo ? " yo" : ""}" style="animation-delay:${i * 0.045}s">
       <div class="pos ${f.total > 0 && i < 3 ? medalla[i] : ""}">${i + 1}</div>
       <div class="quien"><div class="nom">${esc(f.u.nombre)} ${esc(f.u.apellido)}
         ${f.u.paid ? `<span class="sello verde">Pagó</span>` : `<span class="sello gris">Pendiente</span>`}</div>
-        <div class="det">exactos ${f.c3} · dif ${f.c2} · ganador ${f.c1} · ${estado}</div></div>
+        <div class="det">exactos ${f.c3} · dif ${f.c2} · ganador ${f.c1}${detPen} · ${estado}</div></div>
       <div class="pts">${f.total}<small>PTS</small></div>
     </div>`;
   });
@@ -334,18 +398,21 @@ export function cuerpoCorreo() {
   if (!yo) return "";
   const L = [
     "MIS PREDICCIONES — POLLA AMIGOS · MUNDIAL 2026",
+    RONDA_NOMBRE.toUpperCase(),
     "Jugador: " + yo.nombre + " " + yo.apellido,
     "Confirmadas: " + fmtFirma(yo.submittedAt || Date.now()),
-    "Predicciones: " + predsCount(yo.preds || {}) + "/72",
+    "Predicciones: " + predsCount(yo.preds || {}) + "/" + TOTAL,
     "------------------------------"
   ];
-  GROUPS.forEach((g) => {
-    L.push("GRUPO " + g);
-    matchesOf(g).forEach((m) => {
-      const p = (yo.preds || {})[m.id];
-      L.push(m.h + " " + (p && p[0] != null ? p[0] : "-") + ":" + (p && p[1] != null ? p[1] : "-") + " " + m.a);
-    });
-    L.push("");
+  M.forEach((m) => {
+    const p = (yo.preds || {})[m.id];
+    const g0 = p && p[0] != null ? p[0] : "-";
+    const g1 = p && p[1] != null ? p[1] : "-";
+    let linea = T[m.h][0] + " " + g0 + ":" + g1 + " " + T[m.a][0];
+    if (p && p[0] != null && p[0] === p[1] && p[2]) {
+      linea += " (pasa " + T[m[p[2] === "h" ? "h" : "a"]][0] + ")";
+    }
+    L.push("Nº" + m.n + "  " + linea);
   });
   return L.join("\n");
 }

@@ -1,9 +1,15 @@
-/* Selecciones y fixture oficial de la fase de grupos (hora UTC).
+/* Selecciones y fixture de la FASE ELIMINATORIA — Dieciseisavos de final.
+   Horas en UTC; la app las muestra en la hora local de cada usuario.
    ⚠️ IMPORTANTE: este FIXTURE debe mantenerse idéntico al de
    apps-script/Code.gs (var FIXTURE). Son dos entornos separados
    (navegador y Google Apps Script) y no comparten archivos: si
-   cambias un horario o equipo aquí, cámbialo también allá. */
+   cambias un horario o equipo aquí, cámbialo también allá.
+
+   Equipos "TBD" = Por definir (cruces que dependían de 3ros lugares o
+   disyuntivas aún no resueltas). Cuando se confirmen, reemplaza el
+   código TBD del partido por el código real del equipo, aquí y en Code.gs. */
 export const T = {
+  TBD:["Por definir","🏳️"],
   MEX:["México","🇲🇽"], RSA:["Sudáfrica","🇿🇦"], KOR:["Corea del Sur","🇰🇷"], CZE:["R. Checa","🇨🇿"],
   CAN:["Canadá","🇨🇦"], BIH:["Bosnia y H.","🇧🇦"], QAT:["Qatar","🇶🇦"], SUI:["Suiza","🇨🇭"],
   BRA:["Brasil","🇧🇷"], MAR:["Marruecos","🇲🇦"], HAI:["Haití","🇭🇹"], SCO:["Escocia","🏴󠁧󠁢󠁳󠁣󠁴󠁿"],
@@ -18,12 +24,49 @@ export const T = {
   ENG:["Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿"], CRO:["Croacia","🇭🇷"], GHA:["Ghana","🇬🇭"], PAN:["Panamá","🇵🇦"]
 };
 
-export const GROUPS = "ABCDEFGHIJKL".split("");
+/* Etiqueta de la ronda actual. Los "grupos" del modelo anterior pasan a
+   ser una sola ronda. Mantenemos el nombre GROUPS por compatibilidad de
+   la lógica existente, pero ahora contiene una única ronda. */
+export const GROUPS = ["16"];
+export const RONDA_NOMBRE = "Dieciseisavos de final";
 
-const FIX = [[1,"A","MEX","RSA","2026-06-11T19:00:00Z"],[2,"A","KOR","CZE","2026-06-12T02:00:00Z"],[3,"B","CAN","BIH","2026-06-12T19:00:00Z"],[4,"D","USA","PAR","2026-06-13T01:00:00Z"],[5,"B","QAT","SUI","2026-06-13T19:00:00Z"],[6,"C","BRA","MAR","2026-06-13T22:00:00Z"],[7,"C","HAI","SCO","2026-06-14T01:00:00Z"],[8,"D","AUS","TUR","2026-06-14T04:00:00Z"],[9,"E","GER","CUW","2026-06-14T17:00:00Z"],[10,"F","NED","JPN","2026-06-14T20:00:00Z"],[11,"E","CIV","ECU","2026-06-14T23:00:00Z"],[12,"F","SWE","TUN","2026-06-15T02:00:00Z"],[13,"H","ESP","CPV","2026-06-15T16:00:00Z"],[14,"G","BEL","EGY","2026-06-15T19:00:00Z"],[15,"H","KSA","URU","2026-06-15T22:00:00Z"],[16,"G","IRN","NZL","2026-06-16T01:00:00Z"],[17,"I","FRA","SEN","2026-06-16T19:00:00Z"],[18,"I","IRQ","NOR","2026-06-16T22:00:00Z"],[19,"J","ARG","ALG","2026-06-17T01:00:00Z"],[20,"J","AUT","JOR","2026-06-17T04:00:00Z"],[21,"K","POR","COD","2026-06-17T17:00:00Z"],[22,"L","ENG","CRO","2026-06-17T20:00:00Z"],[23,"L","GHA","PAN","2026-06-17T23:00:00Z"],[24,"K","UZB","COL","2026-06-18T02:00:00Z"],[25,"A","CZE","RSA","2026-06-18T16:00:00Z"],[26,"B","SUI","BIH","2026-06-18T19:00:00Z"],[27,"B","CAN","QAT","2026-06-18T22:00:00Z"],[28,"A","MEX","KOR","2026-06-19T01:00:00Z"],[29,"D","USA","AUS","2026-06-19T19:00:00Z"],[30,"C","SCO","MAR","2026-06-19T22:00:00Z"],[31,"C","BRA","HAI","2026-06-20T00:30:00Z"],[32,"D","TUR","PAR","2026-06-20T03:00:00Z"],[33,"F","NED","SWE","2026-06-20T17:00:00Z"],[34,"E","GER","CIV","2026-06-20T20:00:00Z"],[35,"E","ECU","CUW","2026-06-21T00:00:00Z"],[36,"F","TUN","JPN","2026-06-21T04:00:00Z"],[37,"H","ESP","KSA","2026-06-21T16:00:00Z"],[38,"G","BEL","IRN","2026-06-21T19:00:00Z"],[39,"H","URU","CPV","2026-06-21T22:00:00Z"],[40,"G","NZL","EGY","2026-06-22T01:00:00Z"],[41,"J","ARG","AUT","2026-06-22T17:00:00Z"],[42,"I","FRA","IRQ","2026-06-22T21:00:00Z"],[43,"I","NOR","SEN","2026-06-23T00:00:00Z"],[44,"J","JOR","ALG","2026-06-23T03:00:00Z"],[45,"K","POR","UZB","2026-06-23T17:00:00Z"],[46,"L","ENG","GHA","2026-06-23T20:00:00Z"],[47,"L","PAN","CRO","2026-06-23T23:00:00Z"],[48,"K","COL","COD","2026-06-24T02:00:00Z"],[49,"B","SUI","CAN","2026-06-24T19:00:00Z"],[50,"B","BIH","QAT","2026-06-24T19:00:00Z"],[51,"C","MAR","HAI","2026-06-24T22:00:00Z"],[52,"C","SCO","BRA","2026-06-24T22:00:00Z"],[53,"A","RSA","KOR","2026-06-25T01:00:00Z"],[54,"A","CZE","MEX","2026-06-25T01:00:00Z"],[55,"E","CUW","CIV","2026-06-25T20:00:00Z"],[56,"E","ECU","GER","2026-06-25T20:00:00Z"],[57,"F","TUN","NED","2026-06-25T23:00:00Z"],[58,"F","JPN","SWE","2026-06-25T23:00:00Z"],[59,"D","TUR","USA","2026-06-26T02:00:00Z"],[60,"D","PAR","AUS","2026-06-26T02:00:00Z"],[61,"I","NOR","FRA","2026-06-26T19:00:00Z"],[62,"I","SEN","IRQ","2026-06-26T19:00:00Z"],[63,"H","CPV","KSA","2026-06-27T00:00:00Z"],[64,"H","URU","ESP","2026-06-27T00:00:00Z"],[65,"G","NZL","BEL","2026-06-27T03:00:00Z"],[66,"G","EGY","IRN","2026-06-27T03:00:00Z"],[67,"L","PAN","ENG","2026-06-27T21:00:00Z"],[68,"L","CRO","GHA","2026-06-27T21:00:00Z"],[69,"K","COL","POR","2026-06-27T23:30:00Z"],[70,"K","COD","UZB","2026-06-27T23:30:00Z"],[71,"J","ALG","AUT","2026-06-28T02:00:00Z"],[72,"J","JOR","ARG","2026-06-28T02:00:00Z"]];
+/* Pistas de cada cruce (sub-rótulo opcional bajo el partido). Por número de partido. */
+export const PISTAS = {
+  73:"2°A vs 2°B", 74:"1°C vs 2°F", 75:"1°E vs 3°D", 76:"1°F vs 2°C",
+  77:"2°E vs 2°I", 78:"1°I vs 3°F", 79:"1°A vs 3°E", 80:"1°L vs 3° (G. F/H/I)",
+  81:"1°G vs 3° (G. A/B/F)", 82:"1°D vs 3°B", 83:"1°H vs 2°J", 84:"2°K vs 2°L",
+  85:"1°B vs 3° (G. E/H/I/J)", 86:"2°D vs 2°G", 87:"1°J vs 2°H", 88:"1°K vs 3°L"
+};
+
+/* [nº, ronda, local, visita, fechaUTC] — Dieciseisavos (16 partidos).
+   Convertidos a UTC desde hora de Argentina (UTC-3). */
+const FIX = [
+  [73,"16","RSA","CAN","2026-06-28T19:00:00Z"],
+  [74,"16","BRA","JPN","2026-06-29T17:00:00Z"],
+  [75,"16","GER","PAR","2026-06-29T20:30:00Z"],
+  [76,"16","NED","MAR","2026-06-30T01:00:00Z"],
+  [77,"16","CIV","NOR","2026-06-30T17:00:00Z"],
+  [78,"16","FRA","SWE","2026-06-30T21:00:00Z"],
+  [79,"16","MEX","ECU","2026-07-01T01:00:00Z"],
+  [80,"16","ENG","TBD","2026-07-01T16:00:00Z"],
+  [81,"16","BEL","TBD","2026-07-01T20:00:00Z"],
+  [82,"16","USA","BIH","2026-07-02T00:00:00Z"],
+  [83,"16","ESP","TBD","2026-07-02T19:00:00Z"],
+  [84,"16","TBD","CRO","2026-07-02T23:00:00Z"],
+  [85,"16","SUI","TBD","2026-07-03T03:00:00Z"],
+  [86,"16","AUS","EGY","2026-07-03T18:00:00Z"],
+  [87,"16","ARG","CPV","2026-07-03T22:00:00Z"],
+  [88,"16","TBD","GHA","2026-07-04T01:30:00Z"]
+];
 
 export const M = FIX.map((f) => ({ id: "m" + f[0], n: f[0], g: f[1], h: f[2], a: f[3], utc: f[4], ms: new Date(f[4]).getTime() }));
 export const matchesOf = (g) => M.filter((m) => m.g === g);
+
+/* ¿El partido tiene algún equipo aún por definir? */
+export const tienePendiente = (m) => m.h === "TBD" || m.a === "TBD";
+
+/* Total de partidos de la ronda (para barras de progreso y contadores). */
+export const TOTAL = M.length;
 
 /* Goles máximos por marcador (debe coincidir con la validación del Apps Script). */
 export const MAX_GOLES = 15;

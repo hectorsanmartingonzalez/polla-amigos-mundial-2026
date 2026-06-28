@@ -1,5 +1,5 @@
 /* Orquestador: render, eventos, acciones y temporizadores. */
-import { GROUPS, MAX_GOLES } from "./datos.js";
+import { MAX_GOLES } from "./datos.js";
 import { S, me, cargarIdentidad, guardarIdentidad, limpiarIdentidad } from "./estado.js";
 import { apiOk, apiGet, apiPost } from "./api.js";
 import { esc, copia, sincronizarReloj, hayCierreInminente } from "./util.js";
@@ -15,30 +15,27 @@ const PIN_RE = /^[0-9]{4}$/;
    ============================================================ */
 const ORDEN_VISTAS = ["inicio", "pred", "tabla"];
 let vistaPrev = S.view;
-let grupoPrev = S.grupo;
 
 function render() {
   const yo = me();
   $("cab-sub").innerHTML =
-    "48 selecciones · 72 partidos de la fase de grupos" +
+    "Dieciseisavos de final · 16 cruces eliminatorios" +
     (yo ? ` · <b>${esc(yo.nombre)} ${esc(yo.apellido[0])}.</b> <a data-act="salir">cambiar</a>` : "");
 
   $("tabs").innerHTML = TABS.map(([v, ico, txt]) =>
-    `<button type="button" class="tab${S.view === v ? " activo" : ""}" data-act="tab" data-v="${v}">
-      <span class="ico">${ico}</span>${txt}</button>`).join("");
+    `<button type="button" class="tab${S.view === v ? " activo" : ""}" data-act="tab" data-v="${v}"${S.view === v ? ' aria-current="page"' : ""}>
+      <span class="ico" aria-hidden="true">${ico}</span>${txt}</button>`).join("");
 
   const main = $("main");
   if (!apiOk()) { main.innerHTML = vConfig(); return; }
   if (S.errorRed && !S.users.length) { main.innerHTML = vError(); return; }
 
-  /* Dirección de la transición: por orden de pestaña, o por orden de grupo */
+  /* Dirección de la transición entre pestañas */
   let dir = 0;
   if (S.view !== vistaPrev) {
     dir = ORDEN_VISTAS.indexOf(S.view) - ORDEN_VISTAS.indexOf(vistaPrev);
-  } else if (S.view === "pred" && S.grupo !== grupoPrev) {
-    dir = "ABCDEFGHIJKL".indexOf(S.grupo) - "ABCDEFGHIJKL".indexOf(grupoPrev);
   }
-  vistaPrev = S.view; grupoPrev = S.grupo;
+  vistaPrev = S.view;
 
   main.classList.remove("entra-der", "entra-izq");
   main.innerHTML = S.view === "inicio" ? vInicio() : S.view === "pred" ? vPred() : vTabla();
@@ -165,7 +162,7 @@ async function registrar() {
     S.users.push(d.user);
     guardarIdentidad(d.user.id, pin);
     S.preds = {}; S.dirty = false; S.registrando = false; S.pidiendoPin = null;
-    S.view = "pred"; S.grupo = "A";
+    S.view = "pred";
     render();
     toast("¡Bienvenido a la polla! ✓");
   } catch (_) {
@@ -212,23 +209,28 @@ document.addEventListener("click", (ev) => {
     S.preds = {}; S.dirty = false; S.pidiendoPin = null; S.view = "inicio";
     render();
   }
-  else if (act === "grupo") {
-    const g = b.getAttribute("data-g");
-    if (!g) return;
-    S.grupo = g;
+  else if (act === "penal") {
+    const mid = b.getAttribute("data-m");
+    const w = b.getAttribute("data-w"); // "h" o "a"
+    const p = S.preds[mid];
+    if (!p || p[0] == null || p[0] !== p[1]) return; // solo en empates
+    S.preds[mid] = [p[0], p[1], w];
+    S.dirty = true;
+    if (navigator.vibrate) navigator.vibrate(8);
     render();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   else if (act === "step") {
     const mid = b.getAttribute("data-m");
     const s = +b.getAttribute("data-s");
     const d = +b.getAttribute("data-d");
-    const p = S.preds[mid] || [null, null];
+    const p = S.preds[mid] || [null, null, null];
     let v = p[s];
     v = v == null ? (d > 0 ? 0 : null) : Math.min(MAX_GOLES, Math.max(0, v + d));
     if (v === null) return;
-    const nuevo = [p[0], p[1]];
+    const nuevo = [p[0], p[1], p[2]];
     nuevo[s] = v;
+    /* Si ya no es empate, descartar el clasificado de penales */
+    if (nuevo[0] != null && nuevo[1] != null && nuevo[0] !== nuevo[1]) nuevo[2] = null;
     S.preds[mid] = nuevo;
     S.dirty = true;
     S.flash = [mid, s];

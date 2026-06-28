@@ -27,19 +27,37 @@ export const fmtFirma = (ts) => new Date(ts)
 
 export const isLocked = (m) => ahora() >= m.ms;
 
-/* 3 exacto · 2 diferencia de gol · 1 solo ganador · 0 nada · null sin datos */
+/* PUNTAJE (dieciseisavos):
+   pred y real son [golLocal, golVisita, clasificado?]
+   - clasificado: "h" (local) o "a" (visita); SOLO aplica cuando el marcador es empate.
+   3 exacto · 2 diferencia de gol · 1 solo ganador · 0 nada
+   + 1 punto extra si predijiste empate, el real fue empate, y acertaste quién pasó en penales.
+   Devuelve null si falta información. */
 export function pts(pred, real) {
   if (!pred || !real || pred[0] == null || real[0] == null) return null;
   const [ph, pa] = pred, [rh, ra] = real;
-  if (ph === rh && pa === ra) return 3;
-  if (ph - pa === rh - ra) return 2;
-  if (Math.sign(ph - pa) === Math.sign(rh - ra)) return 1;
-  return 0;
+  let base;
+  if (ph === rh && pa === ra) base = 3;
+  else if (ph - pa === rh - ra) base = 2;
+  else if (Math.sign(ph - pa) === Math.sign(rh - ra)) base = 1;
+  else base = 0;
+
+  /* Bonus de penales: solo si ambos (predicción y real) son empate */
+  let bonus = 0;
+  if (ph === pa && rh === ra && pred[2] && real[2] && pred[2] === real[2]) bonus = 1;
+  return base + bonus;
 }
+
+/* ¿La predicción de un empate exige elegir clasificado? */
+export const esEmpatePred = (v) => !!(v && v[0] != null && v[1] != null && v[0] === v[1]);
 
 export const copia = (o) => JSON.parse(JSON.stringify(o || {}));
 
-export const completa = (v) => !!(v && v[0] != null && v[1] != null);
+/* Una predicción está COMPLETA si tiene ambos goles, y además —si es empate—
+   tiene elegido el clasificado por penales. */
+export const completa = (v) =>
+  !!(v && v[0] != null && v[1] != null && (v[0] !== v[1] || (v[2] === "h" || v[2] === "a")));
+
 export const predsCount = (p) => M.reduce((c, m) => c + (completa(p[m.id]) ? 1 : 0), 0);
 export const abiertasSinPred = (p) => M.reduce((c, m) => c + (!isLocked(m) && !completa(p[m.id]) ? 1 : 0), 0);
 export const grupoCompleto = (g, p) => M.filter((m) => m.g === g).every((m) => completa(p[m.id]));

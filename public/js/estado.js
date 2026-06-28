@@ -1,7 +1,6 @@
 /* Estado de la aplicación (sin tocar el DOM). */
 export const S = {
   view: "inicio",
-  grupo: "A",
   users: [],
   results: {},
   meId: null,

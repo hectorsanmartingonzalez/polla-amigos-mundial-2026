@@ -1,5 +1,23 @@
 # Historial de cambios — Polla Amigos
 
+## v2.1 — Inicio explicativo + pulido de accesibilidad
+
+- Pantalla de Inicio rediseñada como onboarding: hero de bienvenida, pasos 1·2·3, mini-demo visual de cómo se predice, regla de penales destacada y reglas en tarjetas con íconos.
+- Selector de penales: cuando el empate aún no tiene clasificado elegido, el bloque se resalta y dice "elige uno".
+- Accesibilidad: aria-current en pestañas, role="progressbar" en la barra, aria-pressed y role="group" en penales, aria-labels descriptivos en los steppers (con nombre de equipo), banderas marcadas como decorativas.
+- Todas las animaciones respetan prefers-reduced-motion.
+
+## v2.0 — Fase eliminatoria: Dieciseisavos de final
+
+- La app pasa de fase de grupos (72 partidos) a DIECISEISAVOS (16 cruces).
+- Predicción de marcador exacto 3/2/1, igual que antes.
+- NUEVO: si predices empate, eliges quién avanza en penales → +1 punto extra si aciertas.
+- Pozo ÍNTEGRO para el ganador (ya no se divide en premio + fiesta).
+- Borrón y cuenta nueva: nadie arrastra puntos de la fase de grupos.
+- Horarios convertidos a hora de Chile (UTC-4); 6 cruces quedan "Por definir" hasta que se confirmen los rivales.
+- Backend: nueva columna "pasa_penales (h/a)" en la pestaña resultados.
+- Desempate: exactos → diferencias → aciertos de penales → quien confirmó primero.
+
 ## v1.1 — Rediseño minimalista + mejoras
 
 - Nueva paleta minimalista premium: índigo · violeta (reemplaza magenta-naranja-ámbar).

@@ -11,7 +11,7 @@ Arquitectura: una **planilla de Google** es la base de datos (las predicciones l
 1. Entra a `sheets.new` con tu cuenta Google y nombra la planilla **Polla Amigos 2026**.
 2. Menú **Extensiones → Apps Script**. Borra el contenido de `Código.gs` y pega completo el archivo **`apps-script/Code.gs`** de este repo. Guarda (💾).
 3. En la barra superior selecciona la función **configurar** y pulsa **▶ Ejecutar**. Autoriza: *Revisar permisos* → tu cuenta → **Avanzado** → *Ir a … (no seguro)* → **Permitir** (el aviso es estándar: es tu propio script sobre tu propia planilla).
-4. Verifica en la planilla que aparecieron las pestañas **participantes**, **resultados** y **detalle**, con los 72 partidos cargados.
+4. Verifica en la planilla que aparecieron las pestañas **participantes**, **resultados** y **detalle**, con los 16 cruces de dieciseisavos cargados.
 5. Botón azul **Implementar → Nueva implementación** → ⚙ tipo **Aplicación web** → *Ejecutar como:* **Yo** → *Quién tiene acceso:* **Cualquier persona** → **Implementar**.
 6. **Copia la URL** de la aplicación web (termina en `/exec`).
 
@@ -46,7 +46,7 @@ Arquitectura: una **planilla de Google** es la base de datos (las predicciones l
 
 ## Operación diaria (tu panel es la planilla)
 
-- **Resultados:** pestaña *resultados*, llena `goles_local` y `goles_visita` (celdas amarillas). La tabla del sitio se recalcula sola y además se refresca automáticamente cada minuto.
+- **Resultados:** pestaña *resultados*, llena `goles_local` y `goles_visita` (celdas amarillas). **Si un partido termina empatado y se define por penales**, escribe en la columna `pasa_penales` una `h` si avanzó el equipo LOCAL o una `a` si avanzó el VISITA (así se otorga el punto extra a quienes lo acertaron). La tabla del sitio se recalcula sola y se refresca cada minuto.
 - **Pagos:** pestaña *participantes*, marca el **checkbox `pagado`**. El pozo y los sellos *Pagó* se actualizan al instante.
 - **detalle:** matriz legible con todas las predicciones (una columna por participante) — ideal para auditar.
 - **PIN olvidado:** cada participante tiene su PIN visible para ti en la columna `pin`; puedes dárselo o cambiarlo.
@@ -58,7 +58,7 @@ NO crees una implementación nueva (cambiaría la URL y el sitio quedaría desco
 
 ## ⚠️ Si modificas el fixture
 
-El calendario de 72 partidos vive en DOS lugares que deben quedar idénticos: `public/js/datos.js` (const `FIX`) y `apps-script/Code.gs` (var `FIXTURE`). Son entornos separados y no comparten archivos: si cambias un horario o equipo en uno, cámbialo también en el otro.
+El calendario de los 16 cruces vive en DOS lugares que deben quedar idénticos: `public/js/datos.js` (const `FIX`) y `apps-script/Code.gs` (var `FIXTURE`). Son entornos separados y no comparten archivos: si cambias un horario o equipo en uno, cámbialo también en el otro. Los 6 cruces marcados como `TBD` ("Por definir") esperan que se confirmen los rivales (terceros lugares y disyuntivas): cuando se sepan, reemplaza el código `TBD` por el del equipo real en ambos archivos.
 
 ## Notas
 
