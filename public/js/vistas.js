@@ -47,7 +47,7 @@ export function vInicio() {
     </li>
     <li class="paso">
       <span class="paso-num">2</span>
-      <div class="paso-txt"><b>Predice los marcadores</b><span>En la pestaña ⚽ Predicción, elige el resultado de cada cruce.</span></div>
+      <div class="paso-txt"><b>Predice los marcadores</b><span>En ⚽ Predicción, elige el resultado de cada cruce con los botones + y −.</span></div>
     </li>
     <li class="paso">
       <span class="paso-num">3</span>
@@ -62,34 +62,21 @@ export function vInicio() {
     <div><b class="pz1">1<i>pt</i></b><span>Solo el ganador</span></div>
   </div>
 
-  <div class="demo">
-    <div class="demo-cap">Así se ve una predicción 👇</div>
-    <div class="demo-match">
-      <div class="demo-eq"><span class="demo-bandera">${T.BRA[1]}</span><span class="demo-nom">Brasil</span></div>
-      <div class="demo-marc"><span class="demo-gol">2</span><span class="demo-guion">–</span><span class="demo-gol">1</span></div>
-      <div class="demo-eq"><span class="demo-bandera">${T.JPN[1]}</span><span class="demo-nom">Japón</span></div>
-    </div>
-    <div class="demo-nota">Tocas <b>+</b> y <b>−</b> para poner el marcador que crees que pasará.</div>
-  </div>
-
   <div class="regla-pen">
     <div class="regla-pen-ico" aria-hidden="true">⚖️</div>
-    <div>
-      <b>¿Empate? Hay un punto extra</b>
-      <p>Como es eliminatoria, si predices un empate eliges además <b>quién avanza en los penales</b>.
-      Si aciertas el clasificado, sumas <b>+1 punto</b> 🎯</p>
-    </div>
+    <div><b>¿Empate? +1 punto extra</b>
+    <p>Eliges quién avanza en penales. Si aciertas, sumas un punto.</p></div>
   </div>
 
-  <div class="eyebrow">Bueno saber</div>
+  ${bloqueCuota_()}
+
+  <div class="eyebrow" style="margin-top:18px">Bueno saber</div>
   <div class="reglas-cards">
     <div class="rc"><span class="rc-ico">⏰</span><div><b>Cada cruce se cierra</b><span>a su hora de inicio. Hasta entonces puedes cambiar tu predicción.</span></div></div>
     <div class="rc"><span class="rc-ico">🔄</span><div><b>Tabla en vivo</b><span>A medida que se cargan los resultados, los puntos y la tabla se actualizan solos.</span></div></div>
     <div class="rc"><span class="rc-ico">🔒</span><div><b>Tu PIN te protege</b><span>nadie más puede tocar tus predicciones.</span></div></div>
     <div class="rc"><span class="rc-ico">🥇</span><div><b>Si hay empate de puntos</b><span>gana quien tenga más exactos; si persiste, quien confirmó primero.</span></div></div>
-  </div>
-
-  ${bloqueCuota_()}`;
+  </div>`;
 
   let comparece = `<hr class="doblelinea solo-movil"><div class="eyebrow">Jugadores</div>`;
 
@@ -152,9 +139,11 @@ export function vInicio() {
   } else {
     comparece += `<p class="vacio">Aún no hay jugadores.<br>¡Sé el primero en unirte!</p>`;
   }
-  comparece += `<button class="btn violeta" style="margin-top:10px;width:100%" data-act="reg-on" type="button">
-    Unirme a la polla</button>
-  <footer class="pie">Polla entre amigos · Dieciseisavos · 🇨🇦 🇺🇸 🇲🇽</footer>`;
+  comparece += `<footer class="pie">Polla entre amigos · Dieciseisavos · 🇨🇦 🇺🇸 🇲🇽</footer>
+  <div class="fab-spacer" aria-hidden="true"></div>
+  <div class="fab-unirme">
+    <button class="btn violeta fab-btn" data-act="reg-on" type="button">⚽ Unirme a la polla</button>
+  </div>`;
 
   return envolverInicio_(bases, comparece);
 }

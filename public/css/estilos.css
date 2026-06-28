@@ -387,6 +387,21 @@ hr.doblelinea{border:0;height:1px;background:var(--borde);margin:20px 0}
   padding:10px 12px calc(10px + env(safe-area-inset-bottom));
   background:linear-gradient(to top,var(--fondo) 70%,transparent);
 }
+
+/* Botón flotante "Unirme a la polla" — siempre visible sobre las pestañas */
+.fab-spacer{height:78px}
+.fab-unirme{
+  position:fixed;left:0;right:0;z-index:35;
+  bottom:calc(72px + env(safe-area-inset-bottom));
+  padding:8px 16px 10px;pointer-events:none;
+  background:linear-gradient(to top,var(--fondo) 55%,transparent);
+  animation:fab-entra .5s var(--ease-vivo) both;
+}
+.fab-btn{
+  pointer-events:auto;width:100%;max-width:520px;margin:0 auto;display:flex;
+  font-size:16px;padding:16px;box-shadow:0 10px 30px -8px rgba(79,70,229,.55);
+}
+@keyframes fab-entra{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 .tabs-inner{
   max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);
   gap:6px;background:var(--carta);border:1px solid var(--borde);

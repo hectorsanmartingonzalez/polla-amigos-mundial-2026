@@ -33,9 +33,9 @@ export const RONDA_NOMBRE = "Dieciseisavos de final";
 /* Pistas de cada cruce (sub-rótulo opcional bajo el partido). Por número de partido. */
 export const PISTAS = {
   73:"2°A vs 2°B", 74:"1°C vs 2°F", 75:"1°E vs 3°D", 76:"1°F vs 2°C",
-  77:"2°E vs 2°I", 78:"1°I vs 3°F", 79:"1°A vs 3°E", 80:"1°L vs 3° (G. F/H/I)",
-  81:"1°G vs 3° (G. A/B/F)", 82:"1°D vs 3°B", 83:"1°H vs 2°J", 84:"2°K vs 2°L",
-  85:"1°B vs 3° (G. E/H/I/J)", 86:"2°D vs 2°G", 87:"1°J vs 2°H", 88:"1°K vs 3°L"
+  77:"2°E vs 2°I", 78:"1°I vs 3°F", 79:"1°A vs 3°E", 80:"1°L vs 3°",
+  81:"1°G vs 3°", 82:"1°D vs 3°B", 83:"1°H vs 2°J", 84:"2°K vs 2°L",
+  85:"1°B vs 3°", 86:"2°D vs 2°G", 87:"1°J vs 2°H", 88:"1°K vs 3°L"
 };
 
 /* [nº, ronda, local, visita, fechaUTC] — Dieciseisavos (16 partidos).
@@ -48,15 +48,15 @@ const FIX = [
   [77,"16","CIV","NOR","2026-06-30T17:00:00Z"],
   [78,"16","FRA","SWE","2026-06-30T21:00:00Z"],
   [79,"16","MEX","ECU","2026-07-01T01:00:00Z"],
-  [80,"16","ENG","TBD","2026-07-01T16:00:00Z"],
-  [81,"16","BEL","TBD","2026-07-01T20:00:00Z"],
+  [80,"16","ENG","COD","2026-07-01T16:00:00Z"],
+  [81,"16","BEL","SEN","2026-07-01T20:00:00Z"],
   [82,"16","USA","BIH","2026-07-02T00:00:00Z"],
-  [83,"16","ESP","TBD","2026-07-02T19:00:00Z"],
-  [84,"16","TBD","CRO","2026-07-02T23:00:00Z"],
-  [85,"16","SUI","TBD","2026-07-03T03:00:00Z"],
+  [83,"16","ESP","AUT","2026-07-02T19:00:00Z"],
+  [84,"16","POR","CRO","2026-07-02T23:00:00Z"],
+  [85,"16","SUI","ALG","2026-07-03T03:00:00Z"],
   [86,"16","AUS","EGY","2026-07-03T18:00:00Z"],
   [87,"16","ARG","CPV","2026-07-03T22:00:00Z"],
-  [88,"16","TBD","GHA","2026-07-04T01:30:00Z"]
+  [88,"16","COL","GHA","2026-07-04T01:30:00Z"]
 ];
 
 export const M = FIX.map((f) => ({ id: "m" + f[0], n: f[0], g: f[1], h: f[2], a: f[3], utc: f[4], ms: new Date(f[4]).getTime() }));

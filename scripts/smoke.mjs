@@ -9,7 +9,7 @@ const ok = (cond, nombre) => { if (!cond) { fallos++; console.error("✗", nombr
 
 ok(M.length === 16 && TOTAL === 16, "fixture: 16 dieciseisavos");
 ok(GROUPS.length === 1 && Object.keys(T).length === 49, "1 ronda · 48 selecciones + TBD");
-ok(M.filter(tienePendiente).length === 6, "6 cruces con rival por definir (TBD)");
+ok(M.filter(tienePendiente).length === 0, "todos los cruces tienen equipos definidos");
 
 /* Puntaje básico (sin penales) */
 const casos = [
